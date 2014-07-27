@@ -1,0 +1,4 @@
+INDEX VERSION 1.126+/home/billing/workspaceShopReader/.metadata/.plugins/org.eclipse.jdt.core
+1785014324.index
+773726430.index
+408125097.index

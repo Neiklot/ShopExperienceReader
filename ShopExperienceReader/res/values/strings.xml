@@ -7,4 +7,5 @@
     <string name="scan">Scan</string>
     <string name="edit_message">Inserta la cantidad</string>
 	<string name="quantity">Cantidad</string>
+	<string name="remove">Clean</string>
 </resources>

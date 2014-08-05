@@ -23,10 +23,13 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.shopexperiencereader.dialogs.AlertDialogManager;
+import com.example.shopexperiencereader.loginsupport.SessionManager;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
@@ -34,17 +37,59 @@ public class MainActivity extends Activity implements OnClickListener {
 
 	private Button scanBtn;
 	private TextView formatTxt, contentTxt;
+	
+	// Alert Dialog Manager
+    AlertDialogManager alert = new AlertDialogManager();
+    
+    // Session Manager Class
+    SessionManager session;
+    
+ // Button Logout
+    Button btnLogout;
+	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
-		// setActivityBackgroundColor(555);
+	    super.onCreate(savedInstanceState);       
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        setContentView(R.layout.activity_main);
+     // Session class instance
+        session = new SessionManager(getApplicationContext());
+        
+        TextView lblName = (TextView) findViewById(R.id.lblName);
+        TextView lblEmail = (TextView) findViewById(R.id.lblEmail);
+         
+        // Button logout
+        btnLogout = (Button) findViewById(R.id.btnLogout);
+         
+        Toast.makeText(getApplicationContext(), "User Login Status: " + session.isLoggedIn(), Toast.LENGTH_LONG).show();
+         
+         
+        /**
+         * Call this function whenever you want to check user login
+         * This will redirect user to LoginActivity is he is not
+         * logged in
+         * */
+        session.checkLogin();
+        if (!session.isLoggedIn()) {
+        	finish();
+        	}
 		scanBtn = (Button) findViewById(R.id.scan_button);
 		formatTxt = (TextView) findViewById(R.id.scan_format);
 		contentTxt = (TextView) findViewById(R.id.scan_content);
 		scanBtn.setOnClickListener(this);
 		setTitle("Shop&Experience Reader");
+		
+		btnLogout.setOnClickListener(new View.OnClickListener() {
+            
+            @Override
+            public void onClick(View arg0) {
+                // Clear the session data
+                // This will clear all session data and 
+                // redirect user to LoginActivity
+                session.logoutUser();
+            }
+        });
 	}
 
 	public void sendForm(View v) throws MalformedURLException {
